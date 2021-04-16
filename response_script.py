@@ -14,7 +14,6 @@ def channelid_response(name_list, it_is_db=True):
     for channel in channels:
         channel = channel.split(';')
         for elem in channel:
-            print(elem)
             id_request = youtube.channels().list(
                 part='id',
                 forUsername=elem)
@@ -56,6 +55,7 @@ def main_response(channels_id):
 
     with open('answer.json', mode='w') as answer_file:
         json.dump(to_write, answer_file)
+    print('Запрос выполнен и записан в answer.json')
 
 
 if __name__ == '__main__':

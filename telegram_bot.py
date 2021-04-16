@@ -1,11 +1,9 @@
 import json
-import time
 
-from telegram import bot
-from telegram.ext import Updater, MessageHandler, Filters
-from telegram.ext import CallbackContext, CommandHandler
-from db_work import add_info, del_info, search_id
-from response_script import channelid_response
+import requests
+from telegram.ext import Updater
+from telegram.ext import CommandHandler
+from db_work import add_info, del_info, search_user_channels
 
 with open('CLIENT_SECRET_FILE.json') as client_secret_file:
     client_data = json.load(client_secret_file)
@@ -21,22 +19,6 @@ def help(update, context):
     update.message.reply_text(
         "/add_channel - Добавить канал;\n"
         "/del_channel - Убрать канал из списка отслеживаемых")
-
-
-# TODO
-# @bot.message_handler(commands=["Newsletter"])
-# def answer(message):
-#     newsletter = message.text.split(maxsplit=1)[1]
-#     id_list = search_id()
-#     for i in range(len(id_list)):
-#         try:
-#             time.sleep(5)
-#             bot.send_message(id_list[i]['id'], newsletter)
-#         except:
-#             continue
-
-def ans(update, context):
-    update.message.sendMessage(chat_id=1153144266, text='Hello, World')
 
 
 def add_channel(update, context):
@@ -59,11 +41,29 @@ def del_channel(update, context):
     update.message.reply_text('Канал удалён')
 
 
+def telegram_bot_sendtext(bot_message, botid_list):
+    bot_token = TOKEN
+    text_for_user = []
+    for bot_chatID in botid_list:
+        for massage in bot_message:
+            if massage[0] in search_user_channels(bot_chatID):
+                cor_massage = '\n'.join(massage)
+                try:
+                    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + str(bot_chatID) \
+                                + '&parse_mode=Markdown&text=' + cor_massage
+                except Exception as ex:
+                    print(ex)
+                text_for_user.append(send_text)
+    for elem in text_for_user:
+        response = requests.get(elem)
+
+    return response.json()
+
+
 def main():
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("test", ans))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("add_channel", add_channel))
     updater.start_polling()

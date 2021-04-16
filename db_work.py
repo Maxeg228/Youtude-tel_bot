@@ -27,10 +27,18 @@ def search_id():
     return res_name
 
 
+def search_user_channels(user):
+    con = sqlite3.connect("users_db.db")
+    cur = con.cursor()
+    result = cur.execute(f"""SELECT sub_chanels FROM user  WHERE Name = '{user}'""").fetchall()
+    result = result[0][0].split(';')
+    return result
+
+
 def add_info(user_id, channel):  # добавляем информацию в бд
     con = sqlite3.connect("users_db.db")
     cur = con.cursor()
-    users = cur.execute('''SELECT Name FROM user''').fetchall()
+    users = cur.execute(f'''SELECT Name FROM user''').fetchall()
     names = []
     for elem in users:
         names.append(str(elem[0]))
@@ -49,4 +57,4 @@ def del_info(user_id, channel):  # удаляем информацию из бд
     cur = con.cursor()
 
 
-print(search_id())
+print(search_user_channels('1153144266'))
