@@ -47,7 +47,7 @@ def add_info(user_id, channel):  # добавляем информацию в б
         res = cur.execute(f'''INSERT INTO user(Name, sub_chanels) VALUES ('{user_id}', '{channel}')''')
     else:
         res = cur.execute(f'''UPDATE user
-            SET sub_chanels = '{channel}'
+            SET sub_chanels = '{';'.join(search_user_channels(user_id))};{channel}'
             WHERE Name = '{user_id}' ''')
     con.commit()
 
@@ -55,6 +55,3 @@ def add_info(user_id, channel):  # добавляем информацию в б
 def del_info(user_id, channel):  # удаляем информацию из бд
     con = sqlite3.connect("users_db.db")
     cur = con.cursor()
-
-
-print(search_user_channels('1153144266'))

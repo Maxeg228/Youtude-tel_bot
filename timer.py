@@ -9,7 +9,7 @@ import schedule
 # плановый запуск проверки событий
 def job():
     print('Проверка выполнена')
-    # main_response(channelid_response('CLIENT_SECRET_FILE.json'))
+    main_response(channelid_response('CLIENT_SECRET_FILE.json'))
 
     telegram_bot_sendtext(get_info('answer.json'), search_id())
 
@@ -17,7 +17,7 @@ def job():
     print(datetime.datetime.now())
 
 
-schedule.every(5).seconds.do(job)
+schedule.every(3600).seconds.do(job)
 
 while True:
     schedule.run_pending()

@@ -18,7 +18,7 @@ def channelid_response(name_list, it_is_db=True):
                 part='id',
                 forUsername=elem)
             res_id = id_request.execute()
-            # print(res_id)
+            print(res_id)
             try:
                 if res_id['items'][0]['id'] not in channels_id:
                     channels_id.append(res_id['items'][0]['id'])
@@ -59,4 +59,5 @@ def main_response(channels_id):
 
 
 if __name__ == '__main__':
-    main_response(channelid_response('CLIENT_SECRET_FILE.json'))
+    print(channelid_response('CLIENT_SECRET_FILE'))
+    # main_response(channelid_response('CLIENT_SECRET_FILE.json'))

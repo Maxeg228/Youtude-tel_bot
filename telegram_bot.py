@@ -1,5 +1,6 @@
 import json
 
+import asyncio
 import requests
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
@@ -47,7 +48,9 @@ def telegram_bot_sendtext(bot_message, botid_list):
     for bot_chatID in botid_list:
         for massage in bot_message:
             if massage[0] in search_user_channels(bot_chatID):
+                print(1)
                 cor_massage = '\n'.join(massage)
+                print(cor_massage)
                 try:
                     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + str(bot_chatID) \
                                 + '&parse_mode=Markdown&text=' + cor_massage
