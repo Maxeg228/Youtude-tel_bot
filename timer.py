@@ -10,10 +10,7 @@ import schedule
 def job():
     print('Проверка выполнена')
     main_response(channelid_response('CLIENT_SECRET_FILE.json'))
-
     telegram_bot_sendtext(get_info('answer.json'), search_id())
-
-    # print(get_info('answer.json'), sep='\n')
     print(datetime.datetime.now())
 
 
@@ -21,10 +18,5 @@ schedule.every(30).seconds.do(job)
 
 
 def start():
-    while True:
-        schedule.run_pending()
-
-
-if __name__ == '__main__':
     while True:
         schedule.run_pending()

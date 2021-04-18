@@ -14,7 +14,7 @@ def search_ch():  # функция для получения отслежива�
     return res_ch
 
 
-def search_id():
+def search_id():  # Поиск всех канналов в дб
     con = sqlite3.connect("users_db.db")
     cur = con.cursor()
     result = cur.execute("""SELECT Name FROM user
@@ -27,7 +27,7 @@ def search_id():
     return res_name
 
 
-def search_user_channels(user):
+def search_user_channels(user):  # поиск канналов определённого пользавтеля
     con = sqlite3.connect("users_db.db")
     cur = con.cursor()
     result = cur.execute(f"""SELECT sub_chanels FROM user  WHERE Name = '{user}'""").fetchall()
@@ -52,6 +52,7 @@ def add_info(user_id, channel):  # добавляем информацию в б
     con.commit()
 
 
+# TODO
 def del_info(user_id, channel):  # удаляем информацию из бд
     con = sqlite3.connect("users_db.db")
     cur = con.cursor()

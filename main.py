@@ -1,3 +1,5 @@
+# Здесь происходит запуск рассылки и бота двумя процессами одновременно
+
 from threading import Thread
 from timer import start
 from telegram_bot import main

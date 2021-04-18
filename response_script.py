@@ -4,7 +4,7 @@ from googleapiclient.discovery import build
 from db_work import search_ch
 
 
-def channelid_response(name_list, it_is_db=True):
+def channelid_response(name_list, it_is_db=True):  # запрос id каннала по его имени
     with open('CLIENT_SECRET_FILE.json') as client_secret_file:
         client_data = json.load(client_secret_file)  # получение данных из файла с данными разработчика
 
@@ -27,7 +27,7 @@ def channelid_response(name_list, it_is_db=True):
     return channels_id
 
 
-def main_response(channels_id):
+def main_response(channels_id):  # запрос событий по списку id канналов
     with open('CLIENT_SECRET_FILE.json') as client_secret_file:
         client_data = json.load(client_secret_file)  # получение данных из файла с данными разработчика
 

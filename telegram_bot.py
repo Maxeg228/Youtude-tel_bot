@@ -42,7 +42,7 @@ def del_channel(update, context):
     update.message.reply_text('Канал удалён')
 
 
-def telegram_bot_sendtext(bot_message, botid_list):
+def telegram_bot_sendtext(bot_message, botid_list):  # функция рассылки
     bot_token = TOKEN
     text_for_user = []
     for bot_chatID in botid_list:
