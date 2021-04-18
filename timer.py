@@ -17,7 +17,14 @@ def job():
     print(datetime.datetime.now())
 
 
-schedule.every(3600).seconds.do(job)
+schedule.every(30).seconds.do(job)
 
-while True:
-    schedule.run_pending()
+
+def start():
+    while True:
+        schedule.run_pending()
+
+
+if __name__ == '__main__':
+    while True:
+        schedule.run_pending()
