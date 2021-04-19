@@ -19,7 +19,7 @@ def start(update, context):
         "https://www.youtube.com/c/'Вот здесь'/videos")
 
 
-def help(update, context):
+def helpt(update, context):
     update.message.reply_text(
         "/add_channel - Добавить канал;\n"
         "/del_channel - Убрать канал из списка отслеживаемых")
@@ -54,7 +54,8 @@ def telegram_bot_sendtext(bot_message, botid_list):  # функция рассы
     for bot_chatID in botid_list:
         check_list = list(map(lambda x: channelid_response(x, it_is_db=False), search_user_channels(bot_chatID)))
         for massage in bot_message:
-            print(f'{check_list}' + massage[0].split('+++')[-1].strip(), massage[0].split('+++')[-1].strip() in check_list)
+            print(f'{check_list}' + massage[0].split('+++')[-1].strip(),
+                  massage[0].split('+++')[-1].strip() in check_list)
             if massage[0].split('+++')[-1].strip() in check_list:
                 print()
                 cor_massage = '\n'.join(massage)
@@ -71,11 +72,24 @@ def telegram_bot_sendtext(bot_message, botid_list):  # функция рассы
     return response.json()
 
 
+def good_morning(botid_list):
+    bot_token = TOKEN
+    text_for_user = []
+    for bot_chatID in botid_list:
+        send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + str(bot_chatID) \
+                    + '&parse_mode=Markdown&text=' + "Доброе утро, варите кофе, смотрите видео и хорошего вам дня"
+
+        text_for_user.append(send_text)
+    for elem in text_for_user:
+        response = requests.get(elem)
+    return response.json()
+
+
 def main():
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("help", help))
+    dp.add_handler(CommandHandler("help", helpt))
     dp.add_handler(CommandHandler("add_channel", add_channel))
     dp.add_handler(CommandHandler("del_channel", del_channel))
     updater.start_polling()
