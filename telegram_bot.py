@@ -13,7 +13,10 @@ TOKEN = client_data['telegram_token']
 
 def start(update, context):
     update.message.reply_text(
-        "Привет! Я эхо-бот. Напишите мне что-нибудь, и я пришлю это назад!")
+        "Привет! Что-бы добавить канал напиши\n"
+        "/add_channel 'название канала'\n"
+        "Где взять название канала:\n"
+        "https://www.youtube.com/c/'Вот здесь'/videos")
 
 
 def help(update, context):
@@ -38,8 +41,11 @@ def add_channel(update, context):
 
 def del_channel(update, context):
     user_id = update.message.from_user.id
-    del_info(user_id, update.message.text)
-    update.message.reply_text('Канал удалён')
+    del_info(user_id, update.message.text[13::])
+    if update.message.text[13::].strip() == '' or update.message.text[13::].strip() == 'all':
+        update.message.reply_text('пользователь очищен')
+    else:
+        update.message.reply_text('Канал удалён')
 
 
 def telegram_bot_sendtext(bot_message, botid_list):  # функция рассылки
@@ -71,6 +77,7 @@ def main():
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("add_channel", add_channel))
+    dp.add_handler(CommandHandler("del_channel", del_channel))
     updater.start_polling()
     updater.idle()
 

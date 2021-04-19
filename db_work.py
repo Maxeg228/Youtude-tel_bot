@@ -52,7 +52,18 @@ def add_info(user_id, channel):  # добавляем информацию в б
     con.commit()
 
 
-# TODO
-def del_info(user_id, channel):  # удаляем информацию из бд
+def del_info(user_id, channel='all'):  # удаляем информацию из бд
     con = sqlite3.connect("users_db.db")
     cur = con.cursor()
+    if channel == 'all':
+        cur.execute(f'''DELETE from user
+            where Name == '{user_id}' ''')
+    else:
+        channels = search_user_channels(user_id)
+        if channel in channels:
+            channels.remove(channel)
+            channels = ';'.join(channels)
+            cur.execute(f'''UPDATE user
+            SET sub_chanels = '{channels}'
+            WHERE Name = '{user_id}' ''')
+    con.commit()
