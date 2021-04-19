@@ -4,27 +4,56 @@ from googleapiclient.discovery import build
 from db_work import search_ch
 
 
+def video_rating(video_id):
+    with open('CLIENT_SECRET_FILE.json') as client_secret_file:
+        client_data = json.load(client_secret_file)  # получение данных из файла с данными разработчика
+
+    youtube = build('youtube', 'v3', developerKey=client_data['key'])
+    rating_req = youtube.videos().list(
+        part="statistics",
+        id=video_id
+    )
+    res = rating_req.execute()
+    return res['items'][0]['statistics']
+
+
 def channelid_response(name_list, it_is_db=True):  # запрос id каннала по его имени
     with open('CLIENT_SECRET_FILE.json') as client_secret_file:
         client_data = json.load(client_secret_file)  # получение данных из файла с данными разработчика
 
     youtube = build('youtube', 'v3', developerKey=client_data['key'])
-    channels = search_ch()
+    if it_is_db:
+        channels = search_ch()
+        channels_id = []
+        for channel in channels:
+            channel = channel.split(';')
+            for elem in channel:
+                id_request = youtube.channels().list(
+                    part='id',
+                    forUsername=elem)
+                res_id = id_request.execute()
+                try:
+                    if res_id['items'][0]['id'] not in channels_id:
+                        channels_id.append(res_id['items'][0]['id'])
+                except Exception:
+                    pass
+        return channels_id
+
+    id_request = youtube.channels().list(
+        part='id',
+        forUsername=name_list)
+    res_id = id_request.execute()
     channels_id = []
-    for channel in channels:
-        channel = channel.split(';')
-        for elem in channel:
-            id_request = youtube.channels().list(
-                part='id',
-                forUsername=elem)
-            res_id = id_request.execute()
-            print(res_id)
-            try:
-                if res_id['items'][0]['id'] not in channels_id:
-                    channels_id.append(res_id['items'][0]['id'])
-            except Exception:
-                pass
-    return channels_id
+    try:
+        print(res_id['items'][0]['id'])
+        if res_id['items'][0]['id'] not in channels_id and res_id['items'][0]['id']:
+            channels_id.append(res_id['items'][0]['id'])
+    except Exception:
+        pass
+    if channels_id:
+        return channels_id[0]
+    else:
+        return 0
 
 
 def main_response(channels_id):  # запрос событий по списку id канналов
@@ -59,5 +88,6 @@ def main_response(channels_id):  # запрос событий по списку
 
 
 if __name__ == '__main__':
-    print(channelid_response('CLIENT_SECRET_FILE'))
+    video_rating('xINCA3RvqUE')
+    # print(channelid_response('CLIENT_SECRET_FILE'))
     # main_response(channelid_response('CLIENT_SECRET_FILE.json'))

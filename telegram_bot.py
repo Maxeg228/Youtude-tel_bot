@@ -1,10 +1,10 @@
 import json
 
-import asyncio
 import requests
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 from db_work import add_info, del_info, search_user_channels
+from response_script import channelid_response
 
 with open('CLIENT_SECRET_FILE.json') as client_secret_file:
     client_data = json.load(client_secret_file)
@@ -46,9 +46,11 @@ def telegram_bot_sendtext(bot_message, botid_list):  # функция рассы
     bot_token = TOKEN
     text_for_user = []
     for bot_chatID in botid_list:
+        check_list = list(map(lambda x: channelid_response(x, it_is_db=False), search_user_channels(bot_chatID)))
         for massage in bot_message:
-            if massage[0] in search_user_channels(bot_chatID):
-                print(1)
+            print(f'{check_list}' + massage[0].split('+++')[-1].strip(), massage[0].split('+++')[-1].strip() in check_list)
+            if massage[0].split('+++')[-1].strip() in check_list:
+                print()
                 cor_massage = '\n'.join(massage)
                 print(cor_massage)
                 try:
@@ -57,9 +59,9 @@ def telegram_bot_sendtext(bot_message, botid_list):  # функция рассы
                 except Exception as ex:
                     print(ex)
                 text_for_user.append(send_text)
+    print(text_for_user)
     for elem in text_for_user:
         response = requests.get(elem)
-
     return response.json()
 
 
