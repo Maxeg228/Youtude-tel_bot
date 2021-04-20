@@ -54,11 +54,9 @@ def telegram_bot_sendtext(bot_message, botid_list):  # функция рассы
     for bot_chatID in botid_list:
         check_list = list(map(lambda x: channelid_response(x, it_is_db=False), search_user_channels(bot_chatID)))
         for massage in bot_message:
-            print(f'{check_list}' + massage[0].split('+++')[-1].strip(),
-                  massage[0].split('+++')[-1].strip() in check_list)
-            if massage[0].split('+++')[-1].strip() in check_list:
+            if massage[0].strip() in check_list:
                 print()
-                cor_massage = '\n'.join(massage)
+                cor_massage = ' \n '.join(massage[1::])
                 print(cor_massage)
                 try:
                     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + str(bot_chatID) \
