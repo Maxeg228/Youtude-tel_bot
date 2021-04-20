@@ -15,7 +15,10 @@ def get_info(file_json):
                     id_video = activity['snippet']['thumbnails']['default']['url'].split('/')[-2]
                     channel_id = activity['snippet']['channelId']
                     mailing_info.append(
-                        [f'На каннале "{activity["snippet"]["channelTitle"]}" вышло новое видео. +++ {channel_id}',
+                        [f'{channel_id}',
+                         f'На каннале "{activity["snippet"]["channelTitle"]}"'
+                         f' {activity["snippet"]["publishedAt"][:10:]} в '
+                         f'{activity["snippet"]["publishedAt"][11:-6:]} вышло новое видео.',
                          activity['snippet']['title'],
                          f'https://www.youtube.com/watch?v={id_video}',
                          f'Просмотры - {video_rating(id_video)["viewCount"]}',
