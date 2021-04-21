@@ -51,6 +51,8 @@ def del_channel(update, context):
 def telegram_bot_sendtext(bot_message, botid_list):  # функция рассылки
     bot_token = TOKEN
     text_for_user = []
+    send_text = ''
+    response = []
     for bot_chatID in botid_list:
         check_list = list(map(lambda x: channelid_response(x, it_is_db=False), search_user_channels(bot_chatID)))
         for massage in bot_message:
@@ -73,6 +75,7 @@ def telegram_bot_sendtext(bot_message, botid_list):  # функция рассы
 def good_morning(botid_list):
     bot_token = TOKEN
     text_for_user = []
+    response = []
     for bot_chatID in botid_list:
         send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + str(bot_chatID) \
                     + '&parse_mode=Markdown&text=' + "Доброе утро, варите кофе, смотрите видео и хорошего вам дня"

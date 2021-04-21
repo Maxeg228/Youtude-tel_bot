@@ -44,9 +44,9 @@ def add_info(user_id, channel):  # добавляем информацию в б
         names.append(str(elem[0]))
     if str(user_id) not in names:
         print(str(user_id), type(names[0]))
-        res = cur.execute(f'''INSERT INTO user(Name, sub_chanels) VALUES ('{user_id}', '{channel}')''')
+        cur.execute(f'''INSERT INTO user(Name, sub_chanels) VALUES ('{user_id}', '{channel}')''')
     else:
-        res = cur.execute(f'''UPDATE user
+        cur.execute(f'''UPDATE user
             SET sub_chanels = '{';'.join(search_user_channels(user_id))};{channel}'
             WHERE Name = '{user_id}' ''')
     con.commit()

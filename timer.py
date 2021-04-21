@@ -15,12 +15,9 @@ def job():
         good_morning(search_id())
 
 
-schedule.every(2 * 3).seconds.do(job)
+schedule.every(3600 * 3).seconds.do(job)
 
 
 def start():
     while True:
         schedule.run_pending()
-
-
-start()

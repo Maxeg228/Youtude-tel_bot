@@ -35,8 +35,8 @@ def channelid_response(name_list, it_is_db=True):  # запрос id канна�
                 try:
                     if res_id['items'][0]['id'] not in channels_id:
                         channels_id.append(res_id['items'][0]['id'])
-                except Exception:
-                    pass
+                except Exception as ex:
+                    print(ex)
         return channels_id
 
     id_request = youtube.channels().list(
@@ -48,8 +48,8 @@ def channelid_response(name_list, it_is_db=True):  # запрос id канна�
         print(res_id['items'][0]['id'])
         if res_id['items'][0]['id'] not in channels_id and res_id['items'][0]['id']:
             channels_id.append(res_id['items'][0]['id'])
-    except Exception:
-        pass
+    except Exception as ex:
+        print(ex)
     if channels_id:
         return channels_id[0]
     else:
@@ -79,15 +79,10 @@ def main_response(channels_id):  # запрос событий по списку
     for res in result:
         try:
             to_write.append(res['items'])
-        except Exception:
-            pass
+        except Exception as ex:
+            print(ex)
 
     with open('answer.json', mode='w') as answer_file:
         json.dump(to_write, answer_file)
     print('Запрос выполнен и записан в answer.json')
 
-
-if __name__ == '__main__':
-    video_rating('xINCA3RvqUE')
-    # print(channelid_response('CLIENT_SECRET_FILE'))
-    # main_response(channelid_response('CLIENT_SECRET_FILE.json'))
