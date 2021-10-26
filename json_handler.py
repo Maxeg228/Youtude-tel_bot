@@ -26,7 +26,3 @@ def get_info(file_json):
                          f'👎- {video_rating(id_video)["dislikeCount"]}'])
 
     return mailing_info
-
-
-if __name__ == '__main__':
-    print(*get_info('answer.json'), sep='\n')

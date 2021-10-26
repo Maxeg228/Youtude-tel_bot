@@ -11,7 +11,7 @@ with open('CLIENT_SECRET_FILE.json') as client_secret_file:
 TOKEN = client_data['telegram_token']
 
 
-def start(update, context):
+def start(update, context):  # Старт диалога
     update.message.reply_text(
         "Привет! Что-бы добавить канал напиши\n"
         "/add_channel 'название канала'\n"
@@ -57,9 +57,7 @@ def telegram_bot_sendtext(bot_message, botid_list):  # функция рассы
         check_list = list(map(lambda x: channelid_response(x, it_is_db=False), search_user_channels(bot_chatID)))
         for massage in bot_message:
             if massage[0].strip() in check_list:
-                print()
                 cor_massage = ' \n '.join(massage[1::])
-                print(cor_massage)
                 try:
                     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + str(bot_chatID) \
                                 + '&parse_mode=Markdown&text=' + cor_massage
