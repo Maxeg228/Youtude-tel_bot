@@ -28,15 +28,20 @@ def channelid_response(name_list, it_is_db=True):  # запрос id канна�
         for channel in channels:
             channel = channel.split(';')
             for elem in channel:
-                id_request = youtube.channels().list(
-                    part='id',
-                    forUsername=elem)
-                res_id = id_request.execute()
-                try:
-                    if res_id['items'][0]['id'] not in channels_id:
-                        channels_id.append(res_id['items'][0]['id'])
-                except Exception as ex:
-                    print(ex)
+                print(elem)
+                if len(elem) == 24 and elem[0] == 'U':
+                    channels_id.append(elem)
+                else:
+                    id_request = youtube.channels().list(
+                        part='id',
+                        forUsername=elem.strip())
+                    res_id = id_request.execute()
+                    try:
+                        if res_id['items'][0]['id'] not in channels_id:
+                            channels_id.append(res_id['items'][0]['id'])
+                            print(res_id['items'][0]['id'], '12')
+                    except Exception as ex:
+                        print(ex)
         return channels_id
 
     id_request = youtube.channels().list(
@@ -59,7 +64,7 @@ def channelid_response(name_list, it_is_db=True):  # запрос id канна�
 def main_response(channels_id):  # запрос событий по списку id канналов
     with open('CLIENT_SECRET_FILE.json') as client_secret_file:
         client_data = json.load(client_secret_file)  # получение данных из файла с данными разработчика
-
+    print(channels_id)
     youtube = build('youtube', 'v3', developerKey=client_data['key'])
 
     # составление запроса

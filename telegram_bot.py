@@ -14,9 +14,8 @@ TOKEN = client_data['telegram_token']
 def start(update, context):  # Старт диалога
     update.message.reply_text(
         "Привет! Что-бы добавить канал напиши\n"
-        "/add_channel 'название канала'\n"
-        "Где взять название канала:\n"
-        "https://www.youtube.com/c/'Вот здесь'/videos")
+        "/add_channel 'Ссылка на канал'\n"
+    )
 
 
 def helpt(update, context):
@@ -29,13 +28,13 @@ def add_channel(update, context):
     correct = True
     try:
         user_id = update.message.from_user.id
-        add_info(user_id, update.message.text[13::])
+        add_info(user_id, update.message.text[13::].split('/')[4])
     except Exception as ex:
         print(ex)
         correct = False
         update.message.reply_text('Произошла ошибка повторите команду.')
     if correct:
-        update.message.reply_text('Канал добавлен.')
+        update.message.reply_text(f'Канал {update.message.text[13::].split("/")[4]} добавлен.')
     # update.user.id()
 
 
